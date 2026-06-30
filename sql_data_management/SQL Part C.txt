@@ -1,0 +1,41 @@
+############################
+#Creating the table sampRec#
+############################
+
+CREATE TABLE sampRec(
+orderNo NUMBER NOT NULL,
+productNo NUMBER NOT NULL,
+price Decimal(5,2),
+quantity NUMBER,
+sales DECIMAL(6,2),
+qtrID NUMBER NOT NULL,
+monthID NUMBER NOT NULL,
+YearID NUMBER NOT NULL,
+PRIMARY KEY(orderNO,productNo)
+);
+
+#######################################
+#Inserting values in the sampRec table#
+#######################################
+
+INSERT INTO sampRec VALUES (10107, 2, 95.7, 30, 2871, 1, 2, 2003);
+INSERT INTO sampRec VALUES (10107, 5, 99.91, 39, 3896.49, 1, 2, 2003);
+INSERT INTO sampRec VALUES (10121, 5, 81.35, 34, 2765.9, 1, 2, 2003);
+INSERT INTO sampRec VALUES (10134, 2, 94.74, 41, 3884.34, 3, 7, 2004);
+INSERT INTO sampRec VALUES (10134, 5, 100.0, 27, 3307.77, 3, 7, 2004);
+INSERT INTO sampRec VALUES (10159, 14, 100.0, 49, 5205.27, 4, 10, 2005);
+INSERT INTO sampRec VALUES (10168, 1, 96.66, 36, 3479.76, 4, 10, 2006);
+INSERT INTO sampRec VALUES (10180, 12, 100.0, 42, 4695.6, 4, 11, 2006);
+INSERT INTO sampRec VALUES (10180, 9, 86.13, 29, 2497.77, 4, 11, 2006);
+
+
+
+SELECT sampRec.orderNo, sampRec.monthID, sampRec.YearID, SUM(sampRec.quantity)
+FROM sampRec
+GROUP BY sampRec.orderNo, sampRec.monthID, sampRec.YearID
+ORDER BY sampRec.monthID, sampRec.YearID;
+
+
+
+
+

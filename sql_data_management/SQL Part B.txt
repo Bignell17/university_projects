@@ -1,0 +1,156 @@
+#######################
+# Creating users table#
+#######################
+
+CREATE TABLE users (
+userID VARCHAR2(7) PRIMARY KEY,
+name VARCHAR2(20) NOT NULL,
+emailAddress VARCHAR2(30) NOT NULL
+);
+
+
+######################################
+# Inserting Values in the users Table#
+######################################
+
+INSERT INTO users (userID, name, emailAddress)VALUES ('kendj3', 'Kenderine, J', 'kendj3@hotmail.co.uk');
+
+INSERT INTO users (userID, name, emailAddress)VALUES ('patel11', 'Patel, F', 'patel11@ntl.co.uk');
+
+INSERT INTO users (userID, name, emailAddress)VALUES ('flak05', 'Flavel, K', 'flak05@freeserve.co.uk');
+
+
+INSERT INTO users (userID, name, emailAddress)VALUES ('johnsj9', 'Johnson, J', 'johnsj9@msn.co.uk');
+
+
+INSERT INTO users (userID, name, emailAddress)VALUES ('keita77', 'Keita, R', 'keita77@hotmail.co.uk');
+
+
+INSERT INTO users (userID, name, emailAddress)VALUES ('simpb91', 'Simpson, B', 'Simpb91@tesco.co.uk');
+
+
+
+##########################
+# Creating category table#
+##########################
+
+CREATE TABLE category(
+categoryCode CHAR(3) PRIMARY KEY,
+title VARCHAR2(20) NOT NULL
+);
+
+
+#########################################
+# Inserting Values in the category Table#
+#########################################
+
+INSERT INTO category VALUES ('C11', 'Classics');
+INSERT INTO category VALUES ('C12', 'Pop-Rock');
+INSERT INTO category VALUES ('C13', 'Movie Soundtrack');
+
+
+
+
+########################
+# Creating music table #
+########################
+
+CREATE TABLE music(
+musicID CHAR(4) PRIMARY KEY,
+title VARCHAR2(30) NOT NULL,
+categoryCode CHAR(3) REFERENCES category,
+costPerDownload DECIMAL(4,2) NOT NULL
+);
+
+
+#######################################
+# Inserting Values in the music Table #
+#######################################
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M001', 'James Bond: Golden Eyes', 'C13', '0.99');
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M002', 'Lake House', 'C13', '1.99');
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M003', 'Dvorak: Symphony No 9', 'C11', '1.49');
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M004', 'Handel: Water Music', 'C11', '1.79');
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M005', 'Sense and Sensibility', 'C13', '1.50');
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M006', 'Beatles: Yesterday', 'C12', '1.10');
+
+
+INSERT INTO music (musicID, title, categoryCode, costPerDownload)VALUES ('M007', 'Elton John: Your Song', 'C12', '0.89');
+
+
+
+###############################
+# Creating musicDownload table#
+###############################
+
+CREATE TABLE musicDownload (
+userID VARCHAR2(7) REFERENCES users,
+musicID CHAR(4) REFERENCES music,
+downloadDate DATE NOT NULL,
+PRIMARY KEY (userID,musicID)
+);
+
+
+
+
+##############################################
+# Inserting Values in the musicDownload Table#
+##############################################
+
+INSERT INTO musicDownload VALUES ('kendj3','M002', TO_DATE('03-May-18', 'dd-mm-yy'));
+
+INSERT INTO musicDownload VALUES ('johnsj9','M005', TO_DATE('01-May-19', 'dd-mm-yy'));
+
+INSERT INTO musicDownload VALUES ('patel11','M002', TO_DATE('06-May-18', 'dd-mm-yy'));
+
+INSERT INTO musicDownload VALUES ('johnsj9','M001', TO_DATE('06-May-19', 'dd-mm-yy'));
+
+INSERT INTO musicDownload VALUES ('kendj3','M003', TO_DATE('01-Aug-19', 'dd-mm-yy'));
+
+INSERT INTO musicDownload VALUES ('keita77','M004', TO_DATE('02-Aug-19', 'dd-mm-yy'));
+
+INSERT INTO musicDownload VALUES ('simpb91','M007', TO_DATE('05-Sep-18', 'dd-mm-yy'));
+
+
+#######################
+#Answer to the queries#
+#######################
+
+1)
+SELECT musicID,title,categoryCode FROM music
+ORDER BY title ASC;
+
+
+2)
+SELECT COUNT(userID) FROM musicDownload
+INNER JOIN music ON musicDownload.musicID=music.musicID
+INNER JOIN category ON music.categoryCode=category.categoryCode
+WHERE category.title='Pop-Rock';
+
+
+3)
+SELECT category.title,  COUNT(music.categoryCode) FROM musicDownload
+INNER JOIN music ON music.musicID=musicDownload.musicID
+INNER JOIN category ON music.categoryCode=category.categoryCode
+GROUP BY category.title, music.categoryCode;
+
+
+4)
+SELECT category.title, COUNT(music.categoryCode) FROM musicDownload
+INNER JOIN music ON musicDownload.musicID=music.musicID
+INNER JOIN category ON music.categoryCode=category.categoryCode
+GROUP BY category.title, music.categoryCode
+HAVING COUNT(music.categoryCode) > 1;
+
+
